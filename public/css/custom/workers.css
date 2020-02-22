@@ -1,0 +1,54 @@
+.user-row{
+    cursor: pointer;
+}
+#data tr.active td {
+    background:rgb(152, 152, 152);
+    color:#fff;
+    outline:0;
+}
+.led-green {
+    width: 12px;
+    height: 12px;
+    background-color: #690;
+    border-radius: 50%;
+    /*box-shadow: #000 0 -1px 7px 1px, inset #460 0 -1px 9px, #7D0 0 2px 12px;*/
+}
+.led-red-on {
+    width: 12px;
+    height: 12px;
+    background-color: #f90;
+    border-radius: 50%;
+   /* box-shadow: #000 0 -1px 7px 1px, inset #600 0 -1px 9px, #F00 0 2px 12px;*/
+}
+.led-red-off {
+    width: 12px;
+    height: 12px;
+    background-color: #f00; /*400*/
+    border-radius: 50%;
+    /*box-shadow: #000 0 -1px 7px 1px, inset #600 0 -1px 9px, #F00 0 2px 12px;*/
+}
+.status-span {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.status-p {
+    margin: 0;
+    margin-left: 15px;
+}
+.mainInfoUser-a{
+    color: #000;
+}
+.mainInfoUser-a:hover{
+    color: #000;
+}
+.last-activ {
+    margin-bottom: 0px !important;
+    font-size: 12px;
+    color: grey;
+}
+tr.active td .last-activ {
+    color: #fff;
+}

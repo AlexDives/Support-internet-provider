@@ -3,7 +3,7 @@
 @section('menu')
     <ul class="sidenav-inner py-1">
         <li class="sidenav-item">
-            <a href="/" class="sidenav-link"><i class="sidenav-icon ion ion-ios-home"></i>
+            <a href="/main" class="sidenav-link"><i class="sidenav-icon ion ion-ios-home"></i>
                 <div>Главная</div>
             </a>          
         </li>
@@ -18,7 +18,7 @@
             </a>
         </li>
         <li class="sidenav-item btn-b">
-            <a href="#" class="sidenav-link"><i class="sidenav-icon ion ion-md-log-out"></i>
+            <a href="/quit" class="sidenav-link"><i class="sidenav-icon ion ion-md-log-out"></i>
                 <div>Выход</div>
             </a>
         </li>
