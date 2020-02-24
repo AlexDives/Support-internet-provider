@@ -20,21 +20,15 @@ class AuthCheck
             echo '<script>location.replace("/");</script>'; exit;
         } else {
             $user = DB::table('users')->where(['id' => session('user_id')])->first();
-            if ($user->is_block == 'T') 
-            {
-                AuthCheck::logOut($request);
-            }
+
+            DB::table('users')->where('id', session('user_id'))->update(['last_active' => date("Y-m-d H:i:s",time())]);
+            $role = DB::table('users')->where('id', session('user_id'))->first();
+            session(['role_id' => $role->role_id]); 
+            if ($role->id > 0)
+                return $next($request);
             else 
             {
-                DB::table('users')->where('id', session('user_id'))->update(['last_active' => date("Y-m-d H:i:s",time())]);
-                $role = DB::table('users')->where('user_id', session('user_id') )->first();
-                session(['role_id' => $role->id]); 
-                if ($role->id > 0)
-                    return $next($request);
-                else 
-                {
-                    AuthCheck::logOut($request);
-                }
+                AuthCheck::logOut($request);
             }
         }
     }

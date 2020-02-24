@@ -2,7 +2,7 @@
 
 Route::get('/', 'indexController@index');
 Route::post('/auth', 'indexController@auth');
-Route::post('/quit', 'indexController@quit');
+Route::get('/quit', 'indexController@quit');
 
 Route::get('/main', 'mainController@index')->middleware('authCheck');
 
