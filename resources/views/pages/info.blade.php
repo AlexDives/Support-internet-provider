@@ -7,7 +7,7 @@
                 <div>Главная</div>
             </a>          
         </li>
-        <li class="sidenav-item" active>
+        <li class="sidenav-item active">
             <a href="#" class="sidenav-link"><i class="sidenav-icon ion ion-md-information-circle"></i>
                 <div>Информация</div>
             </a>
@@ -41,37 +41,6 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#layout-navbar-collapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse" id="layout-navbar-collapse">
-            <hr class="d-lg-none w-100 my-2">
-            <div class="navbar-nav align-items-lg-center">
-                <label class="nav-item navbar-text navbar-search-box p-0 active">
-                    <i class="ion ion-ios-search navbar-icon align-middle"></i>
-                    <span class="navbar-search-input pl-2">
-                      <input type="text" class="form-control navbar-text mx-2" placeholder="Найти..." style="width:200px">
-                    </span>
-                </label>
-            </div>
-            <div class="navbar-nav align-items-lg-center ml-auto">
-                <div class="demo-navbar-notifications nav-item dropdown mr-lg-3">
-                    <a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown">
-                        Логин
-                    </a> 
-                </div>
-                <div class="demo-navbar-messages nav-item dropdown mr-lg-3">
-                    <a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown">
-                        Заявки
-                    </a>                
-                </div>
-                <div class="nav-item d-none d-lg-block text-big font-weight-light line-height-1 opacity-25 mr-3 ml-1">|</div>
-                <div class="demo-navbar-user nav-item dropdown">
-                    <a class="nav-link" href="#">
-                        <span class="d-inline-flex flex-lg-row-reverse align-items-center align-middle"> 
-                            <span class="px-1 mr-lg-2 ml-2 ml-lg-0">Поиск</span>
-                        </span>
-                    </a> 
-                </div>
-            </div>
-        </div>
     </nav>
     <div class="layout-content">
       <div class="container-fluid flex-grow-1 container-p-y">
@@ -85,68 +54,84 @@
             </li>
           </ul>
           <div class="tab-content">
-            <div class="tab-pane fade show active" id="user-edit-account">
+            <form action="/newOffer" method="POST" class="tab-pane fade show active" id="user-edit-account">
+              {{ csrf_field() }}
               <div class="card-body pb-2">
                 <h4 class="font-weight-bold py-3 m-0"> Договор </h4>
                 <div class="form-group row">
-                  <label class="col-form-label col-sm-2 text-sm-right">Тип подключения:</label>
-                  <div class="col-sm-3">
-                    <select class="custom-select">
-                      <option selected></option>
-                      <option></option>
-                      <option></option>
-                      <option></option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
                   <label class="col-form-label col-sm-2 text-sm-right">Тариф:</label>
                   <div class="col-sm-3">
-                    <select class="custom-select">
-                      <option selected></option>
-                      <option></option>
-                      <option></option>
-                      <option></option>
+                    <select class="custom-select" id="tariff" name="tariff">
+                      <option value="-1"></option>
+                      @foreach ($tariffs as $tariff)
+                        <option value="{{$tariff->id}}">{{$tariff->name}}</option>
+                      @endforeach
                     </select>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-form-label col-sm-2 text-sm-right">Акция:</label>
                   <div class="col-sm-3">
-                    <select class="custom-select">
-                      <option selected></option>
-                      <option></option>
-                      <option></option>
-                      <option></option>
+                    <select class="custom-select" id="stocks" name="stocks">
+                      <option value="-1"></option>
+                      @foreach ($stocks as $stock)
+                        <option value="{{$stock->id}}">{{$stock->name}}</option>
+                      @endforeach
                     </select>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-form-label col-sm-2 text-sm-right">Логин друга:</label>
                   <div class="col-sm-3">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="login_refer" name="login_refer">
                   </div>
                 </div>
                 <hr class="border-light m-0">
                 <h4 class="font-weight-bold py-3 m-0"> Паспортные данные </h4>
                 <div class="form-group row">
-                  <label class="col-form-label col-sm-1 text-sm-right">Ф. И. О.</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control mb-1" value="">
+                  <label class="col-form-label col-sm-1 text-sm-right">Фамилия</label>
+                  <div class="col-sm-3">
+                    <input type="text" class="form-control mb-1" value="" id="famil" name="famil">
+                  </div>
+                  <label class="col-form-label col-sm-1 text-sm-right">Пол:</label>
+                  <div class="col-sm-1">
+                    <select class="custom-select" id="gender" name="gender">
+                      <option value="-1"></option>
+                      <option value="М">Мужской</option>
+                      <option value="Ж">Женский</option>
+                    </select>
+                  </div>
+                  <label class="col-form-label col-sm-1 text-sm-right">Дата рождения:</label>
+                  <div class="col-sm-2">
+                    <input type="date" class="form-control mb-1" value="" id="birthday" name="birthday">
                   </div>
                 </div>
                 <div class="form-group row">
+                  <label class="col-form-label col-sm-1 text-sm-right">Имя</label>
+                  <div class="col-sm-3">
+                    <input type="text" class="form-control mb-1" value="" id="name" name="name">
+                  </div>
                   <label class="col-form-label col-sm-1 text-sm-right">Серия:</label>
                   <div class="col-sm-1">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="pasp_ser" name="pasp_ser">
                   </div>
                   <label class="col-form-label col-sm-1 text-sm-right">Номер:</label>
                   <div class="col-sm-2">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="pasp_num" name="pasp_num">
                   </div>
                   <label class="col-form-label col-sm-1 text-sm-right">Дата выдачи:</label>
                   <div class="col-sm-2">
-                    <input type="date" class="form-control mb-1" value="">
+                    <input type="date" class="form-control mb-1" value="" id="pasp_date" name="pasp_date">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-form-label col-sm-1 text-sm-right">Отчество</label>
+                  <div class="col-sm-3">
+                    <input type="text" class="form-control mb-1" value="" id="otch" name="otch">
+                  </div>
+                  <label class="col-form-label col-sm-1 text-sm-right">Кем выдан:</label>
+                  <div class="col-sm-7">
+                    <input type="text" class="form-control mb-1" value="" id="pasp_issue" name="pasp_issue">
                   </div>
                 </div>
                 <hr class="border-light m-0"></h4>
@@ -154,60 +139,75 @@
                 <div class="form-group row">
                   <label class="col-form-label col-sm-1 text-sm-right">Город</label>
                   <div class="col-sm-3">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="city" name="city">
                   </div>
                   <label class="col-form-label col-sm-1 text-sm-right">Улица</label>
                   <div class="col-sm-7">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="street" name="street">
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-form-label col-sm-1 text-sm-right">Дом:</label>
                   <div class="col-sm-1">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="house" name="house">
                   </div>
                   <label class="col-form-label col-sm-1 text-sm-right">Подъезд:</label>
                   <div class="col-sm-1">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="porch" name="porch">
                   </div>
                   <label class="col-form-label col-sm-1 text-sm-right">Этаж:</label>
                   <div class="col-sm-1">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="floor" name="floor">
                   </div>
                   <label class="col-form-label col-sm-1 text-sm-right">Квартира:</label>
                   <div class="col-sm-1">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="flatroom" name="flatroom">
                   </div>
                   <label class="col-form-label col-sm-2 text-sm-right">Количество комнат:</label>
                   <div class="col-sm-2">
-                    <select class="custom-select">
+                    <select class="custom-select" id="count_room" name="count_room">
                       <option selected>1</option>
                       <option>2</option>
                       <option>3</option>
                       <option>4</option>
+                      <option>5</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label class="col-form-label col-sm-1 text-sm-right">Телефон</label>
                   <div class="col-sm-2">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="phone_one" name="phone_one">
                   </div>                      
                   <div class="col-sm-2">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="phone_two" name="phone_two">
                   </div>                  
                   <div class="col-sm-2">
-                    <input type="text" class="form-control mb-1" value="">
+                    <input type="text" class="form-control mb-1" value="" id="phone_three" name="phone_three">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-form-label">Свой кабель:</label>
+                  <div class="col-sm-1">
+                    <input type="checkbox" class="form-control mb-1" value="" id="is_cable" name="is_cable">
+                  </div>
+                  <label class="col-form-label">Быстрое подключение:</label>                      
+                  <div class="col-sm-1">
+                    <input type="checkbox" class="form-control mb-1" value="" id="is_speedConnect" name="is_speedConnect">
+                  </div>   
+                  <label class="col-form-label">Договор на дому:</label>               
+                  <div class="col-sm-1">
+                    <input type="checkbox" class="form-control mb-1" value="" id="is_contractHome" name="is_contractHome">
                   </div>
                 </div>
               </div>
               <hr class="border-light m-0">
               <div class="table-responsive P-3">
               <div class="text-center m-3">
-                <button type="button" class="btn btn-primary">Сохранить</button>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
               </div>
               </div>
-            </div>
+            </form>
             <div class="tab-pane fade" id="user-edit-info">
               <div class="card-body pb-2">
                 <div class='row'>
