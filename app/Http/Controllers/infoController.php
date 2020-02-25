@@ -86,20 +86,24 @@ class infoController extends Controller
         );
         $subnet = 'lan'.rand(1, 35);
         $ip_address = DB::table('clients')->max('ip_address');
-        $ip_address_array = explode('.',$ip_address);
-        if ($ip_address_array[3] == '255')
-        {
-            $ip_address_array[2] = $ip_address_array[2]++;
-            $ip_address_array[3] = 1;
-        }
-        else $ip_address_array[3]++;
-        $new_ip = implode('.', $ip_address_array);
 
+        if (isset($ip_address)) {
+            $ip_address_array = explode('.',$ip_address);
+            if ($ip_address_array[3] == '255')
+            {
+                $ip_address_array[2] = $ip_address_array[2]++;
+                $ip_address_array[3] = 1;
+            }
+            else $ip_address_array[3]++;
+            $new_ip = implode('.', $ip_address_array);
+        }
+        else $new_ip = '192.168.0.1';
         $client_id = DB::table('clients')->insertGetId(
             [
                 'person_id'         => $pers_id,
                 'subnet'            => $subnet,
                 'ip_address'        => $new_ip,
+                'date_payments'      => date("Y-m-d H:i:s",time()),
                 'tariff_id'         => $request->tariff,
                 'login_refer'       => $request->login_refer,
                 'is_cable'          => $request->is_cable == 'on' ? 'T' : 'F',
@@ -120,10 +124,10 @@ class infoController extends Controller
         $comment = 'Подключение по адресу: '.$request->city.' '.$request->street.' '.$request->house.'/'.$request->porch.' '.$request->floor.'/'.$request->flatroom.
                    ' '.$request->count_room.' ком. <br>'.$request->famil.' '.$request->name.' '.$request->otch.'<br>'.$request->phone_one.' '.$request->phone_two.' '.
                    $request->phone_three.'<br>';
-        $comment += $request->is_cable == 'on' ? 'свой кабель;' : '';
-        $comment += $request->is_speedConnect == 'on' ? 'быстрое подключение;' : '';
-        $comment += $request->is_contractHome == 'on' ? 'договор на дому;' : '';
-        dd($comment);
+        if ($request->is_cable == 'on') $comment += 'свой кабель;';
+        if ($request->is_speedConnect == 'on') $comment += 'быстрое подключение;';
+        if ($request->is_contractHome == 'on') $comment += 'договор на дому;';
+        
         $request_id = DB::table('requests')->insertGetId(
             [
                 'client_id'         => $client_id,
@@ -132,14 +136,14 @@ class infoController extends Controller
                 'category_id'       => 1,
                 'title'             => 'Подключение по адресу: '.$request->city.' '.$request->street.' '.$request->house.'/'.$request->porch.' '.$request->floor.'/'.$request->flatroom,
                 'comments'           => $comment,
-                'status'            => 'новая'
+                'status'            => 'Открыта'
             ]
         );
         DB::table('request_history')->insert(
             [
                 'request_id'    => $request_id,
-                'status'        => 'новая',
-                'comment'       => 'открытие заявки'
+                'status'        => 'Открыта',
+                'comment'       => 'Открытие заявки'
             ]
         );
         DB::table('history')->insert(
@@ -172,6 +176,13 @@ class infoController extends Controller
                 'client_id'     => $client_id,
                 'downloaded'    => 0,
                 'last_update'   => date("Y-m-d H:i:s",time())
+            ]
+        );
+        DB::table('sessions')->insert(
+            [
+                'client_id'     => $client_id,
+                'sessions_id'    => $request->session()->getId(),
+                'status'        => 'true'
             ]
         );
         echo '<script>location.replace("/main");</script>'; exit;

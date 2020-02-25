@@ -73,16 +73,14 @@
             <div class='col-md-12 mb-5'>
                 <div class="card">
                     <h6 class="card-header"> База заявок </h6>
-                    <div class="card-datatable table-responsive">
-                        @include('pages.ajax.listRequest')
+                    <div class="card-datatable table-responsive" name="list_requests" id ="list_requests">
                     </div>
                 </div>
             </div>
             <div class='col-md-12 mb-5'>
                 <div class="card">
                     <h6 class="card-header"> База пользователей </h6>
-                    <div class="card-datatable table-responsive">
-                        @include('pages.ajax.listUsers')
+                    <div class="card-datatable table-responsive" name="list_users" id="list_users">
                     </div>
                 </div>
             </div>
@@ -105,6 +103,37 @@
     <script src="{{ asset('js/layout-helpers.js') }}"></script>
     <script src="{{ asset('js/pace.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/custom/ping.js') }}"></script>
+    <script>
+        
+        
+        
+
+
+
+
+        
+        function loadClients() {
+            $.ajax({
+            url: '/loadClients',
+            type: 'GET',
+            success: function(html) {
+              $('#list_users').html(html);
+            }
+          });
+        }
+        function loadRequests() {
+          $.ajax({
+            url: '/loadRequests',
+            type: 'GET',
+            success: function(html) {
+              $('#list_requests').html(html);
+            }
+          });
+        }
+        loadRequests();
+        loadClients();
+      </script>
 @endsection
 
 @section('jsEnd')

@@ -12,45 +12,21 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="odd gradeX" data-toggle="modal" data-target="#modals-default" style='cursor: pointer;'>
-        <td>1000</td>
-        <td>Никитюк Максим Дмитриевич</td>
-        <td>Активен</td>
-        <td class="center">270</td>
-        <td class="center">Подключен</td>
-        <td class="center">28.12.2019</td>
-        <td class="center">192.168.5.10</td>
-        <td class="center">г. Луганск, кв. Мирный 12/155</td>
-      </tr> 
-      <tr class="odd gradeX">
-        <td>1001</td>
-        <td>Романов Андрей Антонович</td>
-        <td>Активен</td>
-        <td class="center">270</td>
-        <td class="center">Подключен</td>
-        <td class="center">31.12.2019</td>
-        <td class="center">192.168.5.66</td>
-        <td class="center">г. Луганск, кв. Степной 8/33</td>
-      </tr> 
-      <tr class="odd gradeX">
-        <td>1002</td>
-        <td>Кузин Петр Максимович</td>
-        <td>Активен</td>
-        <td class="center">270</td>
-        <td class="center">Подключен</td>
-        <td class="center">30.12.2019</td>
-        <td class="center">192.168.5.10</td>
-        <td class="center">г. Луганск, кв. Мирный 12/155</td>
-      </tr> 
-      <tr class="odd gradeX">
-        <td>1003</td>
-        <td>Круглов Олег Петрович</td>
-        <td>Активен</td>
-        <td class="center">270</td>
-        <td class="center">Подключен</td>
-        <td class="center">28.12.2019</td>
-        <td class="center">192.168.5.10</td>
-        <td class="center">г. Луганск, кв. Ольховский 6/112</td>
-      </tr>                    
+      @foreach ($clients as $client)
+        <tr class="odd gradeX" data-toggle="modal" data-target="#modals-default" style='cursor: pointer;'>
+          <td>{{ $client->lic_schet }}</td>
+          <td>{{ $client->fio }}</td>
+          @if ( $client->is_block == 'F')
+            <td>Активен</td>
+          @else
+            <td style="color:tomato;">Заблокирован</td>
+          @endif
+          <td class="center">{{ $client->balance }}</td>
+          <td class="center">{{ $is_internet[$client->id] }}</td>
+          <td class="center">{{ date('d.m.Y', strtotime($client->date_payments)) }}</td>
+          <td class="center">{{ $client->ip_address }}</td>
+          <td class="center">{{ $client->address }}</td>
+        </tr> 
+      @endforeach
     </tbody>
   </table>

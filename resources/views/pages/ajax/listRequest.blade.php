@@ -9,26 +9,14 @@
         </tr>
     </thead>
     <tbody>
-        <tr class="odd gradeX">
-            <td>1</td>
-            <td>Закрыта</td>
-            <td>10.10.2019</td>
-            <td class="center">Подключение</td>
-            <td class="center">Подключение нового абонента по адресу кв. Степной 12/3</td>
-        </tr>
-        <tr class="even gradeC">
-            <td>2</td>
-            <td>Закрыта</td>
-            <td>1.12.2019</td>
-            <td class="center">Подключение</td>
-            <td class="center">Подключение нового абонента по адресу кв. Ольховский 16/111</td>
-        </tr>
-        <tr class="odd gradeA">
-            <td>3</td>
-            <td>Открыта</td>
-            <td>3.12.2019</td>
-            <td class="center">Подключение</td>
-            <td class="center">Подключение нового абонента по адресу кв. Мирный 1/64</td>
-        </tr>                    
+        @foreach ($requests as $req)
+            <tr class="odd gradeX">
+                <td>{{ $req->id }}</td>
+                <td>{{ $req->status }}</td>
+                <td>{{ date('d.m.Y', strtotime($req->date_crt)) }}</td>
+                <td class="center">{{ $req->category_name }}</td>
+                <td class="center">{{ $req->title }}</td>
+            </tr>    
+        @endforeach                 
     </tbody>
 </table>
