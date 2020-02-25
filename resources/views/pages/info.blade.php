@@ -227,71 +227,20 @@
             <div class="tab-pane fade" id="user-edit-info">
               <div class="card-body pb-2">
                 <div class='row'>
-                  <div class='col-md-12'>
-                    <table class="table table-striped table-bordered dataTable no-footer">
-                      <thead class="thead-light">
-                        <tr class='text-center'>
-                          <th>Дата</th>
-                          <th>Кто</th>
-                          <th>Категория</th> 
-                          <th>Информация</th>                               
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr class='text-center'>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                        </tr> 
-                        <tr class='text-center'>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                        </tr> 
-                        <tr class='text-center'>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                        </tr> 
-                        <tr class='text-center'>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                        </tr> 
-                        <tr class='text-center'>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                          <td>1</td>
-                        </tr>                             
-                      </tbody>
-                    </table>
+                  <div class='col-md-12' id="table_information">
                   </div>
                 </div>
-                <div class='row text-message mt-3'>
-                  <div class='col-md-2'>
-                    <div class="form-group p1 mb-1">
-                      <select class="custom-select">
-                        <option selected>Категория</option>
-                        <option></option>
-                        <option></option>
-                        <option></option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class='col-md-8 p1 mb-1'>
-                    <input type="text" class="form-control" placeholder="Комментарий">
+                <form action="" method="post" class="row text-message mt-3" id="info_form" name="info_form">
+                  {{ csrf_field() }}
+                  <div class='col-md-10 p1 mb-1'>
+                    <input type="text" class="form-control" placeholder="Комментарий" id="i_comment" name="i_comment">
                   </div>
                   <div class='col-md-2'>
                       <div class="form-group mb-">
-                        <button type="button" class="btn btn-sm btn-outline-primary">Отправить</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="saveInfo();">Отправить</button>
                       </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>
@@ -309,6 +258,33 @@
     <script src="{{ asset('js/layout-helpers.js') }}"></script>
     <script src="{{ asset('js/pace.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script>
+      function saveInfo() {
+        if ($('#i_comment').val() != '') 
+        {
+          $.ajax({
+            url: '/saveInformation',
+            type: 'POST',
+            data: $('#info_form').serialize(),
+            success: function(html) {
+              loadInfo();
+              $('#i_comment').val('');
+            }
+          });
+        }
+        else alert('Напишите комментарий!');
+      }
+      function loadInfo() {
+        $.ajax({
+          url: '/tableInformation',
+          type: 'GET',
+          success: function(html) {
+            $('#table_information').html(html);
+          }
+        });
+      }
+      loadInfo();
+    </script>
 @endsection
 
 @section('jsEnd')

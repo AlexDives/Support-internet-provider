@@ -38,6 +38,27 @@ class infoController extends Controller
         return DB::table('services')->get();
     }
 
+    public function tableInformation()
+    {
+        $info = DB::table('information')
+                    ->leftjoin('users', 'users.id', 'information.user_id')
+                    ->leftjoin('departaments', 'departaments.id', 'users.departament_id')
+                    ->select('information.*', 'users.famil', 'users.name', 'users.otch', 'departaments.name as dep_name')
+                    ->orderby('information.date_crt', 'desc')
+                    ->get();
+        return view('pages.ajax.tableInformation', ['informations' => $info]);
+    }
+
+    public function saveInformation(Request $request)
+    {
+        DB::table('information')->insert(
+            [
+                'user_id'   => session('user_id'),
+                'info_text' => $request->i_comment
+            ]
+        );
+    }
+
     public function newOffer(Request $request)
     {
         $pers_id = DB::table('persons')->insertGetId(

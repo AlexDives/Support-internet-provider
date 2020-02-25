@@ -6,8 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<meta http-equiv="Cache-Control" content="max-age=300, must-revalidate">
 		<meta name="csrf-token" content="{{ csrf_token() }}">
-		<link href="{{ asset('images/favicon.ico') }}" rel="icon" type="image/x-icon"/>
-		<link href="{{ asset('images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon" />
+		<link rel="icon" type="image/x-icon" href="{{asset('img/logo.png')}}">
 		<link href="https://fonts.googleapis.com/css?family=Cabin&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="css/custom/index.css" />
 		<title>Support</title>
