@@ -17,6 +17,13 @@
                 <div>Заявки</div>
             </a>
         </li>
+        @if ($role_id == 1)
+            <li class="sidenav-item">
+            <a href="/workers" class="sidenav-link"><i class="sidenav-icon ion ion-md-headset"></i>
+                <div>Сотрудники</div>
+            </a>
+          </li>
+        @endif
         <li class="sidenav-item btn-b">
             <a href="/quit" class="sidenav-link"><i class="sidenav-icon ion ion-md-log-out"></i>
                 <div>Выход</div>
@@ -27,12 +34,6 @@
 
 @section('content')
     <nav class="layout-navbar navbar navbar-expand-lg align-items-lg-center bg-white container-p-x" id="layout-navbar">
-        <a href="/" class="navbar-brand app-brand demo d-lg-none py-0 mr-4">
-            <span class="app-brand-logo demo bg-primary">
-                <svg viewBox="0 0 148 80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><linearGradient id="a" x1="46.49" x2="62.46" y1="53.39" y2="48.2" gradientUnits="userSpaceOnUse"><stop stop-opacity=".25" offset="0"></stop><stop stop-opacity=".1" offset=".3"></stop><stop stop-opacity="0" offset=".9"></stop></linearGradient><linearGradient id="e" x1="76.9" x2="92.64" y1="26.38" y2="31.49" xlink:href="#a"></linearGradient><linearGradient id="d" x1="107.12" x2="122.74" y1="53.41" y2="48.33" xlink:href="#a"></linearGradient></defs><path style="fill: #fff;" transform="translate(-.1)" d="M121.36,0,104.42,45.08,88.71,3.28A5.09,5.09,0,0,0,83.93,0H64.27A5.09,5.09,0,0,0,59.5,3.28L43.79,45.08,26.85,0H.1L29.43,76.74A5.09,5.09,0,0,0,34.19,80H53.39a5.09,5.09,0,0,0,4.77-3.26L74.1,35l16,41.74A5.09,5.09,0,0,0,94.82,80h18.95a5.09,5.09,0,0,0,4.76-3.24L148.1,0Z"></path><path transform="translate(-.1)" d="M52.19,22.73l-8.4,22.35L56.51,78.94a5,5,0,0,0,1.64-2.19l7.34-19.2Z" fill="url(#a)"></path><path transform="translate(-.1)" d="M95.73,22l-7-18.69a5,5,0,0,0-1.64-2.21L74.1,35l8.33,21.79Z" fill="url(#e)"></path><path transform="translate(-.1)" d="M112.73,23l-8.31,22.12,12.66,33.7a5,5,0,0,0,1.45-2l7.3-18.93Z" fill="url(#d)"></path></svg>
-            </span>
-            <span class="app-brand-text demo font-weight-normal ml-2">MENU</span>
-        </a>
         <div class="layout-sidenav-toggle navbar-nav d-lg-none align-items-lg-center mr-auto">
             <a class="nav-item nav-link px-0 mr-lg-4" href="javascript:void(0)">
                 <i class="ion ion-md-menu text-large align-middle"></i>
@@ -59,33 +60,48 @@
               <div class="card-body pb-2">
                 <h4 class="font-weight-bold py-3 m-0"> Договор </h4>
                 <div class="form-group row">
-                  <label class="col-form-label col-sm-2 text-sm-right">Тариф:</label>
-                  <div class="col-sm-3">
-                    <select class="custom-select" id="tariff" name="tariff">
-                      <option value="-1"></option>
-                      @foreach ($tariffs as $tariff)
-                        <option value="{{$tariff->id}}">{{$tariff->name}}</option>
-                      @endforeach
-                    </select>
+                  <div class="col-md-4">
+                    <div class="form-group row">
+                      <label class="col-form-label col-sm-2 text-sm-right">Тариф:</label>
+                      <div class="col-sm-10">
+                        <select class="custom-select" id="tariff" name="tariff">
+                          <option value="-1"></option>
+                          @foreach ($tariffs as $tariff)
+                            <option value="{{$tariff->id}}">{{$tariff->name}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-form-label col-sm-2 text-sm-right">Акция:</label>
+                      <div class="col-sm-10">
+                        <select class="custom-select" id="stocks" name="stocks">
+                          <option value="-1"></option>
+                          @foreach ($stocks as $stock)
+                            <option value="{{$stock->id}}">{{$stock->name}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-form-label col-sm-2 text-sm-right">Логин друга:</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control mb-1" value="" id="login_refer" name="login_refer">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    @foreach ($services as $service)
+                      <div class="form-group row">
+                        <label class="col-form-label  col-sm-2 text-sm-right">{{$service->name}}:</label>
+                        <div class="col-sm-1">
+                          <input type="checkbox" class="form-control mb-1" id="services[{{$service->id}}]" name="services[{{$service->id}}]">
+                        </div>
+                      </div>
+                    @endforeach
                   </div>
                 </div>
-                <div class="form-group row">
-                  <label class="col-form-label col-sm-2 text-sm-right">Акция:</label>
-                  <div class="col-sm-3">
-                    <select class="custom-select" id="stocks" name="stocks">
-                      <option value="-1"></option>
-                      @foreach ($stocks as $stock)
-                        <option value="{{$stock->id}}">{{$stock->name}}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-form-label col-sm-2 text-sm-right">Логин друга:</label>
-                  <div class="col-sm-3">
-                    <input type="text" class="form-control mb-1" value="" id="login_refer" name="login_refer">
-                  </div>
-                </div>
+                
                 <hr class="border-light m-0">
                 <h4 class="font-weight-bold py-3 m-0"> Паспортные данные </h4>
                 <div class="form-group row">

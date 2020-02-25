@@ -17,11 +17,13 @@
               <div>Заявки</div>
           </a>
       </li>
-      <li class="sidenav-item">
-          <a href="/workers" class="sidenav-link"><i class="sidenav-icon ion ion-md-headset"></i>
-              <div>Сотрудники</div>
-          </a>
-      </li>
+        @if ($role_id == 1)
+            <li class="sidenav-item">
+            <a href="/workers" class="sidenav-link"><i class="sidenav-icon ion ion-md-headset"></i>
+                <div>Сотрудники</div>
+            </a>
+        </li>
+      @endif
       <li class="sidenav-item btn-b">
           <a href="/quit" class="sidenav-link"><i class="sidenav-icon ion ion-md-log-out"></i>
               <div>Выход</div>

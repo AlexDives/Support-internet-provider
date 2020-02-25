@@ -12,7 +12,15 @@ class infoController extends Controller
     {
         $tariffs = infoController::loadTariff();
         $stocks = infoController::loadStocks();
-        return view('pages.info', ['tariffs' => $tariffs, 'stocks' => $stocks]);
+        $services = infoController::loadServices();
+        return view('pages.info', 
+            [ 
+                'tariffs'   => $tariffs, 
+                'stocks'    => $stocks, 
+                'services'  => $services, 
+                'role_id'   => session('role_id')
+            ]
+        );
     }
 
     public function loadTariff()
@@ -23,6 +31,11 @@ class infoController extends Controller
     public function loadStocks()
     {
         return DB::table('stocks')->get();
+    }
+
+    public function loadServices()
+    {
+        return DB::table('services')->get();
     }
 
     public function newOffer(Request $request)
@@ -68,9 +81,9 @@ class infoController extends Controller
                 'ip_address'        => $new_ip,
                 'tariff_id'         => $request->tariff,
                 'login_refer'       => $request->login_refer,
-                'is_cable'          => $request->is_cable ? 'T' : 'F',
-                'is_speedConnect'   => $request->is_speedConnect ? 'T' : 'F',
-                'is_contractHome'   => $request->is_contractHome ? 'T' : 'F'
+                'is_cable'          => $request->is_cable == 'on' ? 'T' : 'F',
+                'is_speedConnect'   => $request->is_speedConnect == 'on' ? 'T' : 'F',
+                'is_contractHome'   => $request->is_contractHome == 'on' ? 'T' : 'F'
             ]
         );
         DB::table('clients')
@@ -81,6 +94,63 @@ class infoController extends Controller
                 'login_internet'        => (1000 + $client_id),
                 'password_internet'     => Hash::make(1000 + $client_id),
                 'lic_schet'             => (1000 + $client_id)
+            ]
+        );
+        $comment = 'Подключение по адресу: '.$request->city.' '.$request->street.' '.$request->house.'/'.$request->porch.' '.$request->floor.'/'.$request->flatroom.
+                   ' '.$request->count_room.' ком. <br>'.$request->famil.' '.$request->name.' '.$request->otch.'<br>'.$request->phone_one.' '.$request->phone_two.' '.
+                   $request->phone_three.'<br>';
+        $comment += $request->is_cable == 'on' ? 'свой кабель;' : '';
+        $comment += $request->is_speedConnect == 'on' ? 'быстрое подключение;' : '';
+        $comment += $request->is_contractHome == 'on' ? 'договор на дому;' : '';
+        dd($comment);
+        $request_id = DB::table('requests')->insertGetId(
+            [
+                'client_id'         => $client_id,
+                'user_id'           => session('user_id'),
+                'departament_id'    => 3,
+                'category_id'       => 1,
+                'title'             => 'Подключение по адресу: '.$request->city.' '.$request->street.' '.$request->house.'/'.$request->porch.' '.$request->floor.'/'.$request->flatroom,
+                'comments'           => $comment,
+                'status'            => 'новая'
+            ]
+        );
+        DB::table('request_history')->insert(
+            [
+                'request_id'    => $request_id,
+                'status'        => 'новая',
+                'comment'       => 'открытие заявки'
+            ]
+        );
+        DB::table('history')->insert(
+            [
+                'client_id' => $client_id,
+                'tariff_id' => $request->tariff
+            ]
+        );
+        if (isset($request->stocks))
+        {
+            if ($request->stocks != -1)
+            {
+                DB::table('history')->insert(
+                    [
+                        'client_id' => $client_id,
+                        'stock_id'    => $request->stocks
+                    ]
+                );
+            }
+        }
+        if (isset($request->services))
+        {
+            foreach ($request->services as $key => $serv)
+            {
+                if ($serv == 'on') DB::table('history')->insert(['client_id' => $client_id, 'service_id' => $key ]);
+            }
+        }
+        DB::table('statistic')->insert(
+            [
+                'client_id'     => $client_id,
+                'downloaded'    => 0,
+                'last_update'   => date("Y-m-d H:i:s",time())
             ]
         );
         echo '<script>location.replace("/main");</script>'; exit;
