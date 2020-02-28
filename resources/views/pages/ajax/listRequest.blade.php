@@ -10,7 +10,7 @@
     </thead>
     <tbody>
         @foreach ($requests as $req)
-            <tr class="odd gradeX">
+            <tr class="odd gradeX" style='cursor: pointer;'>
                 <td>{{ $req->id }}</td>
                 <td>{{ $req->status }}</td>
                 <td>{{ date('d.m.Y', strtotime($req->date_crt)) }}</td>

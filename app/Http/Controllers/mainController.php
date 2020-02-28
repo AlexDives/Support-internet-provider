@@ -16,6 +16,7 @@ class mainController extends Controller
     {
         $clients = DB::table('clients')
                     ->leftjoin('persons', 'persons.id', 'clients.person_id')
+                    ->leftjoin('tariff', 'tariff.id', 'clients.tariff_id')
                     ->select(
                         db::raw(
                             'clients.*, concat(persons.famil, " ", persons.name, " ", persons.otch) as fio,
@@ -24,19 +25,34 @@ class mainController extends Controller
                         )
                     )
                     ->get();
-        $is_internet = [];
-        foreach ($clients as $client)
+        return view('pages.ajax.listUsers', ['clients' => $clients]);
+    }
+
+    public function loadClientInfo(Request $request)
+    {
+        $client = DB::table('clients')
+                    ->leftjoin('persons', 'persons.id', 'clients.person_id')
+                    ->leftjoin('tariff', 'tariff.id', 'clients.tariff_id')
+                    ->select(
+                        db::raw(
+                            'clients.*, persons.famil, persons.name, persons.otch,
+                             concat(persons.city, " ", persons.street, " ", persons.house, "/", persons.porch,
+                             " ", persons.floor, "/", persons.flatroom) as address, persons.phoneOne,
+                             persons.phoneTwo, persons.phoneThree, tariff.name as tariff_name'
+                        )
+                    )
+                    ->where('clients.id', $request->client_id)
+                    ->first();
+        $trafic = DB::table('statistic')->where('client_id', $client->id)->first();
+        $c = ' Kb';
+        if (isset($trafic)) 
         {
-            $session = DB::table('sessions')->where('client_id', $client->id)->orderby('date_crt', 'desc')->first();
-            if (isset($session))
-                if ($session->status == 'true')
-                    $is_internet += [$client->id => 'Подключен'];
-                else
-                    $is_internet += [$client->id => 'Отключен'];
-            else
-                $is_internet += [$client->id => 'Отключен'];
+            if ($trafic > 1000) { $trafic = ($trafic/1000); $c = ' Mb'; }
+            if ($trafic > 1000) { $trafic = ($trafic/1000); $c = ' Gb'; }
+            $trafic += $c;
         }
-        return view('pages.ajax.listUsers', ['clients' => $clients, 'is_internet' => $is_internet]);
+        else $trafic = '0 kb';
+        return view('pages.ajax.userInfo', ['client' => $client, 'trafic' => $trafic]);
     }
 
     public function loadRequests()

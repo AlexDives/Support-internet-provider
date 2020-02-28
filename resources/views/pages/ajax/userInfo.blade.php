@@ -1,30 +1,6 @@
-<div class="modal fade" id="modals-default">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content nav-tabs-top ">
-        <div class='modal-h'>
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#navs-top-home">Общая</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#navs-top-stats">Статистика пополнений</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#navs-top-messages">Комментарии</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#navs-top-session">Сессии</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#navs-top-service">Услуги</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#navs-top-history">История</a>
-            </li>
-          </ul>                        
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-        </div>
-        <div class="modal-body"> 
+
+    
+      
               <div>                              
                 <div class="tab-content">
                   <div class="tab-pane fade active show" id="navs-top-home">
@@ -45,6 +21,9 @@
                             <b>Ф.И.О.:</b>
                           </p>
                           <p>
+                            <b>Адрес:</b>
+                          </p>
+                          <p>
                             <b>Дом. телефон:</b>
                           </p>
                           <p>
@@ -61,15 +40,19 @@
                           </p> 
                         </div>
                         <div class='col-md-9'>
-                          <p>lan35</p>
-                          <p>17705 (физ. лицо)</p>
-                          <p>17705</p>
-                          <p>Иванов Иван Иванович</p>
-                          <p>324401</p>
-                          <p>+380721234567</p>
-                          <p>+380721234567</p>
-                          <p>Форсаж (100)</p>
-                          <p>170.359 Gb</p>
+                          <input type="text" name="subnet" id="subnet" value="{{ $client->subnet }}">
+                          <input type="text" name="login_internet" id="login_internet" value="{{ $client->login_internet }}">
+                          <input type="text" name="lic_schet" id="lic_schet" value="{{ $client->lic_schet }}">
+                          <input type="text" name="famil" id="famil" value="{{ $client->famil }}">
+                          <input type="text" name="name" id="name" value="{{ $client->name }}">
+                          <input type="text" name="otch" id="otch" value="{{ $client->otch }}">
+                          <input type="text" name="address" id="address" value="{{ $client->address }}">
+                          <input type="text" name="phoneOne" id="phoneOne" value="{{ $client->phoneOne }}">
+                          <input type="text" name="phoneTwo" id="phoneTwo" value="{{ $client->phoneTwo }}">
+                          <input type="text" name="phoneThree" id="phoneThree" value="{{ $client->phoneThree }}">
+                          <input type="text" name="tariff_name" id="tariff_name" value="{{ $client->tariff_name }}">
+                          <input type="text" name="trafic" id="trafic" value="{{ $trafic }}">
+
                         </div>
                       </div>
                       <hr>
@@ -80,7 +63,7 @@
                           </p>                                        
                         </div>
                         <div class='col-md-9'>
-                          <button class='btn btn-outline-primary btn-sm'>Выключить</button>
+                          <button class='btn btn-outline-primary btn-sm' onlick="editClientInfo();">@if( $client->enable_internet == 'T' ) Выключить @else Включить @endif</button>
                         </div>
                       </div>
                       <hr>
@@ -354,7 +337,4 @@
                   </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        

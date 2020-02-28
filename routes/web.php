@@ -7,6 +7,7 @@ Route::get('/quit', 'indexController@quit');
 Route::get('/main', 'mainController@index')->middleware('authCheck');
 Route::get('/loadClients', 'mainController@loadClients')->middleware('authCheck');
 Route::get('/loadRequests', 'mainController@loadRequests')->middleware('authCheck');
+Route::post('/loadClientInfo', 'mainController@loadClientInfo')->middleware('authCheck');
 
 Route::get('/info', 'infoController@index')->middleware('authCheck');
 Route::get('/tableInformation', 'infoController@tableInformation')->middleware('authCheck');

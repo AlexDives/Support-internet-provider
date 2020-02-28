@@ -84,7 +84,37 @@
                     </div>
                 </div>
             </div>
-            @include('pages.ajax.userInfo')
+            <div class="modal fade" id="modals-default" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class='modal-h'>
+                        <ul class="nav nav-tabs">
+                          <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#navs-top-home">Общая</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#navs-top-stats">Статистика пополнений</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#navs-top-messages">Комментарии</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#navs-top-session">Сессии</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#navs-top-service">Услуги</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#navs-top-history">История</a>
+                          </li>
+                        </ul>                        
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                      </div>
+                    <div class="modal-body" id="loadClientInfo">
+                    </div>
+                  </div>
+                </div>
+              </div>
             <div class='col-md-12'>
                 <div class="card">
                     @include('pages.ajax.userPing')
@@ -105,20 +135,34 @@
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/custom/ping.js') }}"></script>
     <script>
-        
-        
-        
-
-
-
-
-        
         function loadClients() {
             $.ajax({
             url: '/loadClients',
             type: 'GET',
             success: function(html) {
               $('#list_users').html(html);
+            }
+          });
+        }
+        function editClientInfo() {
+            $.ajax({
+            url: '/editClientInfo',
+            type: 'post',
+            success: function(html) {
+              
+            }
+          });
+        }
+        function loadClientInfo(client_id) {
+            $.ajax({
+            url: '/loadClientInfo',
+            type: 'post',
+            data: {client_id : client_id},
+            headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(html) {
+              $('#loadClientInfo').html(html);
             }
           });
         }
