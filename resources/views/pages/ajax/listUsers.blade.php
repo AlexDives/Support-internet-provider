@@ -22,7 +22,7 @@
             <td style="color:tomato;">Заблокирован</td>
           @endif
           <td class="center">{{ $client->balance }}</td>
-          <td class="center">@if($client->enable_internet) Подключен @else Отключен @endif</td>
+          <td class="center">@if($client->enable_internet == 'T') Подключен @else Отключен @endif</td>
           <td class="center">{{ date('d.m.Y', strtotime($client->date_payments)) }}</td>
           <td class="center">{{ $client->ip_address }}</td>
           <td class="center">{{ $client->address }}</td>

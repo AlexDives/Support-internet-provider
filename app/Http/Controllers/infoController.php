@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class infoController extends Controller
 {
+
     public function index(Request $request)
     {
         $tariffs = infoController::loadTariff();
@@ -187,4 +188,5 @@ class infoController extends Controller
         );
         echo '<script>location.replace("/main");</script>'; exit;
     }
+
 }

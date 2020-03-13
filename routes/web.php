@@ -8,6 +8,18 @@ Route::get('/main', 'mainController@index')->middleware('authCheck');
 Route::get('/loadClients', 'mainController@loadClients')->middleware('authCheck');
 Route::get('/loadRequests', 'mainController@loadRequests')->middleware('authCheck');
 Route::post('/loadClientInfo', 'mainController@loadClientInfo')->middleware('authCheck');
+Route::post('/editClientInfo', 'mainController@editClientInfo')->middleware('authCheck');
+Route::post('/editInternet', 'mainController@editInternet')->middleware('authCheck');
+Route::post('/editPass', 'mainController@editPass')->middleware('authCheck');
+Route::post('/editIpMac', 'mainController@editIpMac')->middleware('authCheck');
+Route::post('/payStatistic', 'mainController@payStatistic')->middleware('authCheck');
+Route::post('/showMessages', 'mainController@showMessages')->middleware('authCheck');
+Route::post('/sendMessages', 'mainController@sendMessages')->middleware('authCheck');
+Route::post('/showSession', 'mainController@showSession')->middleware('authCheck');
+Route::post('/closeSession', 'mainController@closeSession')->middleware('authCheck');
+Route::post('/showHistory', 'mainController@showHistory')->middleware('authCheck');
+Route::post('/showServices', 'mainController@showServices')->middleware('authCheck');
+Route::post('/editServices', 'mainController@editServices')->middleware('authCheck');
 
 Route::get('/info', 'infoController@index')->middleware('authCheck');
 Route::get('/tableInformation', 'infoController@tableInformation')->middleware('authCheck');

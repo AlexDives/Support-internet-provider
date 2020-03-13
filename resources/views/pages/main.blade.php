@@ -145,11 +145,246 @@
           });
         }
         function editClientInfo() {
+          var famil = $('#famil').val();
+          var name = $('#name').val();
+          var otch = $('#otch').val();
+          var city = $('#address_city').val();
+          var street = $('#address_street').val();
+          var house = $('#address_house').val();
+          var porch = $('#address_porch').val();
+          var floor = $('#address_floor').val();
+          var flatroom = $('#address_flatroom').val();
+          var phoneOne = $('#phoneOne').val();
+          var phoneTwo = $('#phoneTwo').val();
+          var phoneThree = $('#phoneThree').val();
+          var cid = $('#cid').val();
+
             $.ajax({
             url: '/editClientInfo',
             type: 'post',
-            success: function(html) {
-              
+            headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              famil : famil, 
+              name : name, 
+              otch : otch, 
+              city : city, 
+              street : street, 
+              house : house, 
+              porch : porch, 
+              floor : floor, 
+              flatroom : flatroom, 
+              phoneOne : phoneOne, 
+              phoneTwo : phoneTwo, 
+              phoneThree : phoneThree,
+              cid : cid
+            },
+            success: function(data)
+            {
+              loadClients();
+            }
+          });
+        }
+        function editInternet(internet) {
+          var cid = $('#cid').val();
+          $.ajax({
+            url: '/editInternet',
+            type: 'post',
+            headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              internet : internet,
+              cid : cid
+            },
+            success: function(data) {
+              if (data == 'T') $('#enable_internet').html('Выключить');
+              else if (data == 'F') $('#enable_internet').html('Включить');
+              $('#enable_internet').attr('onclick', 'editInternet("'+data+'");');
+              loadClients();
+            }
+          });
+        }
+        function payStatistic() {
+          var cid = $('#cid').val();
+          var year = $('#year').val();
+          var month =$('#month').val();
+          $.ajax({
+            url: '/payStatistic',
+            type: 'post',
+            headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              year : year,
+              month : month,
+              cid : cid
+            },
+            success: function(data) {
+              $('#pstats').html(data);
+            }
+          });
+        }
+        function showMessages() {
+          var cid = $('#cid').val();
+          $.ajax({
+            url: '/showMessages',
+            type: 'post',
+            headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              cid : cid
+            },
+            success: function(data) {
+              $('#showMessage').html(data);
+            }
+          });
+        }
+        function showHistory() {
+          var cid = $('#cid').val();
+          $.ajax({
+            url: '/showHistory',
+            type: 'post',
+            headers: {
+              'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              cid : cid
+            },
+            success: function(data) {
+              $('#showHistory').html(data);
+            }
+          });
+        }
+        function showServices() {
+          var cid = $('#cid').val();
+          $.ajax({
+            url: '/showServices',
+            type: 'post',
+            headers: {
+              'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              cid : cid
+            },
+            success: function(data) {
+              $('#showServices').html(data);
+            }
+          });
+        }
+        function editServices(sid) {
+          var cid = $('#cid').val();
+          $.ajax({
+            url: '/editServices',
+            type: 'post',
+            headers: {
+              'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              sid : sid,
+              cid : cid
+            },
+            success: function(data) {
+              showServices();
+            }
+          });
+        }
+        function sendMessages() {
+          var cid = $('#cid').val();
+          var comment = $('#comment').val();
+          $('#comment').val('');
+          $.ajax({
+            url: '/sendMessages',
+            type: 'post',
+            headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              comment : comment,
+              cid : cid
+            },
+            success: function(data) {
+              showMessages();
+            }
+          });
+        }
+        function showSession() {
+          var cid = $('#cid').val();
+          var date_start = $('#start_date').val();
+          var date_end = $('#end_date').val();
+          $('#comment').val('');
+          $.ajax({
+            url: '/showSession',
+            type: 'post',
+            headers: {
+              'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              date_start : date_start,
+              date_end : date_end,
+              cid : cid
+            },
+            success: function(data) {
+              $('#showSessions').html(data);
+            }
+          });
+        }
+        function closeSession(sid) {
+          $.ajax({
+            url: '/closeSession',
+            type: 'post',
+            headers: {
+              'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              sid : sid
+            },
+            success: function(data) {
+              showSession();
+            }
+          });
+        }
+        
+        function editPass(type) {
+          var cid = $('#cid').val();
+          var pass = type == 'stats' ? $("#stat_pass").val() : $("#inet_pass").val();
+          $.ajax({
+            url: '/editPass',
+            type: 'post',
+            headers: {
+              'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              type : type,
+              pass : pass,
+              cid : cid
+            },
+            success: function(data) {
+              $("#stat_pass").val('');
+              $("#inet_pass").val('');
+            }
+          });
+        }
+        function editIpMac() {
+          var cid = $('#cid').val();
+          var ip = $("#ip_address").val();
+          var mac = $("#mac_address").val();
+          $.ajax({
+            url: '/editIpMac',
+            type: 'post',
+            headers: {
+              'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+              ip : ip,
+              mac : mac,
+              cid : cid
+            },
+            success: function(data) {
+              if (data == -1) alert('Данный ip уже занят!');
+              else if (data == -2) alert('Данный MAC уже занят!');
             }
           });
         }
@@ -163,6 +398,9 @@
             },
             success: function(html) {
               $('#loadClientInfo').html(html);
+              showMessages();
+              showHistory();
+              showServices();
             }
           });
         }
@@ -240,7 +478,7 @@
       }
       .message-d {
         float:left;
-        width:100px;
+        width:20%;
       } 
       .message-w {
         min-height: 300px;
@@ -263,6 +501,15 @@
       }
       .ping-c .form-group {
         margin: 8px;
+      }
+      .client-input {
+        height: 21px !important;
+        border: none;
+        cursor: pointer;
+      }
+      .client-input-flex {
+        display: flex;
+        flex-flow: column;
       }
     </style>
 @endsection
