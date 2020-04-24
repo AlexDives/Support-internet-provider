@@ -58,15 +58,6 @@ class mainController extends Controller
         return view('pages.ajax.userInfo', ['client' => $client, 'trafic' => $t]);
     }
 
-    public function loadRequests()
-    {
-        $requests = DB::table('requests')
-                        ->leftjoin('request_category', 'request_category.id', 'requests.category_id')
-                        ->select('requests.*', 'request_category.name as category_name')
-                        ->get();
-        return view('pages.ajax.listRequest', ['requests' => $requests]);
-    }
-
     public function editClientInfo(Request $request)
     {
         $pid = DB::table('clients')->where('id', $request->cid)->first()->person_id;

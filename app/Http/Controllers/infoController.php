@@ -123,8 +123,8 @@ class infoController extends Controller
             ]
         );
         $comment = 'Подключение по адресу: '.$request->city.' '.$request->street.' '.$request->house.'/'.$request->porch.' '.$request->floor.'/'.$request->flatroom.
-                   ' '.$request->count_room.' ком. <br>'.$request->famil.' '.$request->name.' '.$request->otch.'<br>'.$request->phone_one.' '.$request->phone_two.' '.
-                   $request->phone_three.'<br>';
+                   ' '.$request->count_room.' ком.'."\n".$request->famil.' '.$request->name.' '.$request->otch."\n".$request->phone_one.' '.$request->phone_two.' '.
+                   $request->phone_three;
         if ($request->is_cable == 'on') $comment += 'свой кабель;';
         if ($request->is_speedConnect == 'on') $comment += 'быстрое подключение;';
         if ($request->is_contractHome == 'on') $comment += 'договор на дому;';
@@ -187,6 +187,35 @@ class infoController extends Controller
             ]
         );
         echo '<script>location.replace("/main");</script>'; exit;
+    }
+
+    public function quickRequest(Request $request)
+    {
+        
+		$visov      	= htmlspecialchars(trim($request->visov));
+		$comment 		= htmlspecialchars(trim($request->comment));
+		$cid 		    = htmlspecialchars(trim($request->cid));
+        $cat            = $visov;
+        $status         = 'Новая';
+        if ($visov == 3)  $theme = 'У абонента крестик';
+        else $theme = 'У абонента нет сети, требуется вызов';
+        
+        if($comment == '') $comment = $theme;
+
+		$rid = DB::table('requests')->insertGetId(
+                    [
+                        'client_id'         => $cid,
+                        'user_id'			=> session("user_id"),
+                        'departament_id'	=> 5,
+                        'category_id'		=> $cat,
+                        'title'				=> $theme,
+                        'comments'			=> $comment,
+                        'status'			=> $status
+                    ]
+                );
+        DB::table('request_history')->insert(['request_id' => $rid, 'status' => $status, 'comment' => 'новая заявка']);
+
+		return 0;
     }
 
 }
