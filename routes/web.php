@@ -20,6 +20,7 @@ Route::post('/closeSession', 'mainController@closeSession')->middleware('authChe
 Route::post('/showHistory', 'mainController@showHistory')->middleware('authCheck');
 Route::post('/showServices', 'mainController@showServices')->middleware('authCheck');
 Route::post('/editServices', 'mainController@editServices')->middleware('authCheck');
+Route::post('/showPing', 'mainController@showPing')->middleware('authCheck');
 
 Route::get('/info', 'infoController@index')->middleware('authCheck');
 Route::get('/tableInformation', 'infoController@tableInformation')->middleware('authCheck');
@@ -30,3 +31,5 @@ Route::get('/workers', 'workerController@index')->middleware('authCheck');
 Route::post('/workers/save', 'workerController@save')->middleware('authCheck');
 Route::post('/workers/delete', 'workerController@delete')->middleware('authCheck');
 Route::get('/workers/workersList', 'workerController@workersList')->middleware('authCheck');
+
+Route::get('/request', 'requestController@main')->middleware('authCheck');

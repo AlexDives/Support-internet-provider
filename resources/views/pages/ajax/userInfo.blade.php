@@ -171,6 +171,32 @@
                       </div>
                     </div>
                   </div>
+                  <div class="tab-pane fade" id="navs-top-ping">
+                    <div class="card-body p1">
+                      <div class='text-center'>
+                        <h5 style="margin: 0px !important;"> PING: {{$client->ip_address}} </h5>
+                      </div>
+                      <div class='row' >
+                        <div class='col-md-12' id="preLoaderPing" style="display: flex; justify-content: center; margin-top: 20px;">
+                        
+                          <div id="ts-preloader-absolute52"> 
+                            <div class="tscssload-triangles"> 
+                              <div class="tscssload-tri tscssload-invert"></div> 
+                              <div class="tscssload-tri tscssload-invert"></div> 
+                              <div class="tscssload-tri"></div> 
+                              <div class="tscssload-tri tscssload-invert"></div> 
+                              <div class="tscssload-tri tscssload-invert"></div> 
+                              <div class="tscssload-tri"></div> 
+                              <div class="tscssload-tri tscssload-invert"></div> 
+                              <div class="tscssload-tri"></div> 
+                              <div class="tscssload-tri tscssload-invert"></div> 
+                            </div> 
+                          </div>
+                        </div>
+                        <div class='col-md-12' id="showPing" style="display: none;"></div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="tab-pane fade" id="navs-top-messages">
                     <div class="p1" id="showMessage"> 
                     </div>

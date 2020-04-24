@@ -1,22 +1,4 @@
-<h6 class="card-header"> Быстрый пинг </h6>  
-<div class="card-header text-center ping-h">
-    <h5> PING: 192.168.10.5 </h5>
-</div>
-<div class="card-header ping-h">
-    <h5> Результат: потери составляют 0% </h5>
-</div>
-<div class="card-body ping-w">
-    <p class="card-text"><b>Ответ от 127.0.0.1:</b> число байт=32 время<1мс TTL=128</p>
-    <p class="card-text"><b>Ответ от 127.0.0.1:</b> число байт=32 время<1мс TTL=128</p>
-    <p class="card-text"><b>Ответ от 127.0.0.1:</b> число байт=32 время<1мс TTL=128</p>
-    <p class="card-text"><b>Ответ от 127.0.0.1:</b> число байт=32 время<1мс TTL=128</p>
-    <p class="card-text">Статистика Ping для <b>127.0.0.1:</b>                  
-        <div>Пакетов: отправлено = <b>4</b>, получено = <b>4</b>, потеряно = <b>0 (0% потерь)</b></div>
-    </p>
-    <p class="card-text">Приблизительное время приема-передачи в мс:                  
-        <div>Минимальное = 0мсек, Максимальное = 0мсек, Среднее = 0мсек</div>
-    </p>
-</div>
+<textarea style="overflow: hidden; resize: none; width: 100%; height: 400px; background: #fff; border: none; color: black; font-size: 15px;" id="pip" disabled>{{ $resultPing }}</textarea>
 <div class="card-footer text-muted ping-c">
     <div class='row'>
         <div class='col-md-5'>

@@ -49,12 +49,13 @@ class mainController extends Controller
         $c = ' Kb';
         if (isset($trafic)) 
         {
-            if ($trafic > 1000) { $trafic = ($trafic/1000); $c = ' Mb'; }
-            if ($trafic > 1000) { $trafic = ($trafic/1000); $c = ' Gb'; }
-            $trafic += $c;
+            $t = $trafic->downloaded;
+            if ($t > 1000) { $t = ($t/1000); $c = ' Mb'; }
+            if ($t > 1000) { $t = ($t/1000); $c = ' Gb'; }
+            $t .= $c;
         }
-        else $trafic = '0 kb';
-        return view('pages.ajax.userInfo', ['client' => $client, 'trafic' => $trafic]);
+        else $t = '0 Kb';
+        return view('pages.ajax.userInfo', ['client' => $client, 'trafic' => $t]);
     }
 
     public function loadRequests()
@@ -211,5 +212,14 @@ class mainController extends Controller
             else DB::table('history')->insert(['service_id' => $sid, 'date_deactivation' => date("Y-m-d H:i:s",time()), 'client_id' => $cid]);
         }
         else DB::table('history')->insert(['service_id' => $sid, 'date_activation' => date("Y-m-d H:i:s",time()), 'client_id' => $cid]);
+    }
+
+    public function showPing(Request $request)
+    {
+        $ip = DB::table('clients')->where('id', $request->cid)->first()->ip_address;
+        session_write_close();
+        $output = shell_exec("ping -n 4 ".$ip);
+        
+        return view('pages.ajax.userPing', ['resultPing' => iconv("cp866","utf-8", $output)]);
     }
 }

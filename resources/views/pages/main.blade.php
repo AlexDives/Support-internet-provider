@@ -13,13 +13,13 @@
           </a>
       </li>
       <li class="sidenav-item">
-          <a href="#" class="sidenav-link"><i class="sidenav-icon ion ion-md-notifications-outline"></i>
+          <a href="/request" class="sidenav-link"><i class="sidenav-icon ion ion-md-notifications-outline"></i>
               <div>Заявки</div>
           </a>
       </li>
         @if ($role_id == 1)
             <li class="sidenav-item">
-            <a href="/workers" class="sidenav-link"><i class="sidenav-icon ion ion-md-headset"></i>
+            <a href="/workers" class="sidenav-link"><i class="sidenav-icon ion ion-md-people"></i>
                 <div>Сотрудники</div>
             </a>
         </li>
@@ -42,7 +42,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#layout-navbar-collapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse" id="layout-navbar-collapse">
+        <!--<div class="navbar-collapse collapse" id="layout-navbar-collapse">
             <hr class="d-lg-none w-100 my-2">
             <div class="navbar-nav align-items-lg-center">
                 <label class="nav-item navbar-text navbar-search-box p-0 active">
@@ -66,7 +66,7 @@
                     </a> 
                 </div>
             </div>
-        </div>
+        </div>-->
     </nav>
     <div class="container-fluid flex-grow-1 container-p-y">
         <div class='row'>
@@ -85,15 +85,18 @@
                 </div>
             </div>
             <div class="modal fade" id="modals-default" aria-hidden="true" style="display: none;">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-lg" style="max-width: 55rem !important;">
                   <div class="modal-content">
                     <div class='modal-h'>
                         <ul class="nav nav-tabs">
                           <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#navs-top-home">Общая</a>
+                            <a class="nav-link active" id="tab_main" data-toggle="tab" href="#navs-top-home">Общая</a>
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#navs-top-stats">Статистика пополнений</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#navs-top-ping">Ping</a>
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#navs-top-messages">Комментарии</a>
@@ -108,18 +111,13 @@
                             <a class="nav-link" data-toggle="tab" href="#navs-top-history">История</a>
                           </li>
                         </ul>                        
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                        <button type="button" onclick="sPing.abort();" class="close" data-dismiss="modal" aria-label="Close">×</button>
                       </div>
                     <div class="modal-body" id="loadClientInfo">
                     </div>
                   </div>
                 </div>
               </div>
-            <div class='col-md-12'>
-                <div class="card">
-                    @include('pages.ajax.userPing')
-                </div>
-            </div>
         </div>
     </div>
 @endsection
@@ -346,7 +344,6 @@
             }
           });
         }
-        
         function editPass(type) {
           var cid = $('#cid').val();
           var pass = type == 'stats' ? $("#stat_pass").val() : $("#inet_pass").val();
@@ -398,9 +395,11 @@
             },
             success: function(html) {
               $('#loadClientInfo').html(html);
+              $('#tab_main').click();
               showMessages();
               showHistory();
-              showServices();
+              showServices();  
+              showPing();           
             }
           });
         }
@@ -410,6 +409,26 @@
             type: 'GET',
             success: function(html) {
               $('#list_requests').html(html);
+            }
+          });
+        }
+        var sPing;
+        
+        function showPing() {
+          var cid = $('#cid').val();
+          sPing = $.ajax({
+            url: '/showPing',
+            type: 'POST',
+            data: {
+              cid : cid
+            },
+            headers: {
+              'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(html) {
+              $('#showPing').html(html);
+              $('#preLoaderPing').hide();
+              $('#showPing').show();
             }
           });
         }
@@ -443,6 +462,7 @@
     <link rel="stylesheet" href="{{ asset('css/demo.css') }}">
     <link rel="stylesheet" href="{{ asset('css/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datatables.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom/preloader-style.css') }}">
     <style>
       .btn-b {
         position: absolute; 
