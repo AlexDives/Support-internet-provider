@@ -29,7 +29,7 @@ class workerController extends Controller
         ]);
     }
 
-    public function workersList(Request $request)
+    public function workersList()
     {
         $users = workerController::loadUsers();
         $userStatus = [];
